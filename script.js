@@ -21,6 +21,15 @@ Ses envies :
 2) Quand on arrive à 5 clics alors fait naitre le Tama 
 */
 
+const myTama = {
+  name: "",
+  alive: false,
+  fed: 0,
+  playful: 0,
+  clean: 0,
+  lifeDuration: 0,
+};
+
 const start = () => {
   const buttonCenter = document.querySelector(
     '.js-button[data-direction="center"]'
@@ -43,7 +52,7 @@ const start = () => {
 */
 const birth = () => {
   // 1) demander le prénom du Tama
-  const tamaName = prompt("Quel nom a votre Tama ?");
+  myTama.name = prompt("Quel nom a votre Tama ?");
   // 2) fait eclore mon oeuf pour passer au poussin
   showInScreen("🐣");
   // 3) affiche mes vitals
@@ -51,17 +60,25 @@ const birth = () => {
   vitals.classList.remove("hidden");
   // 4) afficher le nom du Tama dans les vitals
   const nameDisplay = document.querySelector(".js-tamaName");
-  nameDisplay.textContent = tamaName;
+  nameDisplay.textContent = myTama.name;
   // 5) mettre les scores des vitals à 5
+  const defaultScore = 5;
   const scoresDisplay = document.querySelectorAll(".js-score");
   scoresDisplay.forEach((score) => {
-    score.textContent = 5;
+    score.textContent = defaultScore;
   });
+  myTama.fed = defaultScore;
+  myTama.playful = defaultScore;
+  myTama.cleaned = defaultScore;
   //6) afficher les actions
   const actions = document.querySelector(".js-actions");
   actions.classList.remove("hidden");
   // 7) appel de la fonction pour le faire grandir
   evolve();
+  // 8) calcul de l'humeur
+  mood();
+  // 9) Calcul de la durée de vie
+  lifeDuration();
 };
 
 /* PHASE 2 : Evolution 
@@ -93,7 +110,6 @@ const evolve = () => {
 
 const wantsTo = (callback) => {
   const needs = ["😋", "🥱", "💩"];
-  //min = 1sec max = 3sec pour tester
   const minDuration = 1000;
   const maxDuration = 3000;
   const duration = getRandomInt({
@@ -109,6 +125,30 @@ const wantsTo = (callback) => {
     if (callback) {
       callback();
     }
+  }, duration);
+};
+
+/* HUMEUR GENERALE :
+Une fonction qui calcule la moyenne des 3 indicateurs : faim, ennuie, propreté
+et elle affiche cette moyenne dans les vitals 
+*/
+const mood = () => {
+  const sum = myTama.fed + myTama.playful + myTama.cleaned;
+  const average = sum / 3;
+  const rounded = Math.round(average);
+  const displayMood = document.querySelector(".js-mood");
+  displayMood.textContent = rounded;
+};
+
+/* DUREE DE VIE 
+une fonction qui, toutes les minutes, met à jour la durée de vie du Tama. 
+*/
+const lifeDuration = () => {
+  const displayLifeDuration = document.querySelector(".js-life-duration");
+  const duration = 60000; // 60 secondes
+  setInterval(() => {
+    myTama.lifeDuration++;
+    displayLifeDuration.textContent = myTama.lifeDuration;
   }, duration);
 };
 
