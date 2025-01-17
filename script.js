@@ -75,8 +75,6 @@ const birth = () => {
   actions.classList.remove("hidden");
   // 7) appel de la fonction pour le faire grandir
   evolve();
-  // 8) calcul de l'humeur
-  mood();
   // 9) Calcul de la durée de vie
   lifeDuration();
 };
@@ -90,7 +88,7 @@ const birth = () => {
 const evolve = () => {
   // 1) attendre la première envie
   const functionToExecute = () => {
-    showInScreen("🥰");
+    mood();
   };
   wantsTo(functionToExecute);
 };
@@ -133,11 +131,15 @@ Une fonction qui calcule la moyenne des 3 indicateurs : faim, ennuie, propreté
 et elle affiche cette moyenne dans les vitals 
 */
 const mood = () => {
+  // partie 1 : Affichage numerique
   const sum = myTama.fed + myTama.playful + myTama.cleaned;
   const average = sum / 3;
   const rounded = Math.round(average);
   const displayMood = document.querySelector(".js-mood");
   displayMood.textContent = rounded;
+  // partie 2 : affichage visuel
+  const listOfEmojis = ["😢", "🙁", "🙂", "😄", "🤗", "🥰"];
+  showInScreen(listOfEmojis[rounded]);
 };
 
 /* DUREE DE VIE 
