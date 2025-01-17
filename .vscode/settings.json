@@ -1,13 +1,11 @@
+"files.associations": {
+    "*.js": "javascript"
+},
+
 {
-  "cSpell.words": [
-    "avec",
-    "devient",
-    "Ensuite",
-    "heureux",
-    "humeur",
-    "lancée",
-    "naissance",
-    "partie",
-    "Tamastudi"
-  ]
+  "compilerOptions": {
+    "checkJs": true
+  },
+  "include": ["**/*.js"]
 }
+"cSpell.enabled": true
