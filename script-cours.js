@@ -1,6 +1,6 @@
 /* 
-État de notre Tamastudi possibles :
-- 🥚 : partie non lancée) 
+États de notre Tamastudi possibles :
+- 🥚 : partie non lancée
 - 🐣 : naissance pendant tant qu'il n'a pas fait son 1er caca
 Ensuite il devient un "grand" avec une humeur variable
 - 😢 : triste 0/5
@@ -9,11 +9,11 @@ Ensuite il devient un "grand" avec une humeur variable
 - 😄 : content 3/5
 - 🤗 : heureux 4/5
 - 🥰 : très heureux 5/5
-- 👻 : mort 0/5 pendant plus d'une minute 
+- 👻 : mort 0/5
 Ses envies :
 - 😋 : faim, aléatoire minimum 30 sec et max 3 minutes
 - 🥱 : jouer, aléatoire minimum 30 sec et max 3 minutes
-- 💩 : caca, aléatoire minimum 30 sec et max 1.30 minutes après avoir mangé
+- 💩 : caca, aléatoire minimum 30 sec et max 1.30 minutes uniquement après avoir mangé
 */
 
 const myTama = {
@@ -32,59 +32,63 @@ const myTama = {
 3) Alors on fait naitre notre tama
 */
 const start = () => {
+  // 1) Cliquer sur le bouton du milieu
   const buttonCenter = document.querySelector(
     '.js-button[data-direction="center"]'
   );
+  // 2) Ajouter un compteur qui attend d'avoir une valeur max de 5
   let count = 0;
   buttonCenter.addEventListener("click", () => {
     count++;
     if (count === 5) {
+      // 3) Alors on fait naitre notre tama
       birth();
     }
   });
 };
 
-/* PHASE 1 : naissance du Tama
-      1) demander le prénom du Tama
-      2) fait eclore mon oeuf pour passer au poussin
-      3) affiche mes vitals 
-      4) afficher le nom du Tama dans les vitals 
-      5) mettre les scores des vitals à 5
+/* 
+PHASE 1 : la naissance de mon tama 
+1) demander le nom de mon personnage
+2) fait éclore mon oeuf pour passer au poussin
+3) affiche mes vitals
+4) affiche le nom de mon tama dans les vitals
+5) mettre les scores des vitals à 5
 */
+
 const birth = () => {
-  // 1) demander le prénom du Tama
-  myTama.name = prompt("Quel nom a votre Tama ?");
-  // 2) fait eclore mon oeuf pour passer au poussin
+  // 1) demander le prénom
+  myTama.name = prompt("Quel nom a votre tamastudi ?");
+  // 2) fait éclore mon oeuf pour passer au poussin
   showInScreen("🐣");
   // 3) affiche mes vitals
   const vitals = document.querySelector(".js-vitals");
   vitals.classList.remove("hidden");
-  // 4) afficher le nom du Tama dans les vitals
+  // 4) affiche le nom de mon tama dans les vitals
   const nameDisplay = document.querySelector(".js-tamaName");
   nameDisplay.textContent = myTama.name;
   // 5) mettre les scores des vitals à 5
-  const defaultScore = 5;
+  const defaultScore = 1;
   myTama.fed = defaultScore;
   myTama.playfull = defaultScore;
   myTama.cleaned = defaultScore;
   updateVitals();
-  //6) afficher les actions
+  // 6) afficher les actions
   const actions = document.querySelector(".js-actions");
   actions.classList.remove("hidden");
-  // 7) appel de la fonction pour le faire grandir
+  // 7) appel de la fonction pour le faire "grandir"
   evolve();
-  //8) calcul durée de vie
+  // 8) Calcule de la durée de vie
   myTama.alive = true;
   calcLifeDuration();
 };
 
-/* PHASE 2 : Evolution 
-    1) Attendre que le Tama ait une première envie
-    2) Il devient grand 
-    3) 
+/* PHASE 2 : l'évolution de mon tama
+1) Attendre que notre tamaStudi ait une "première envie"
+2) Il devient grand
 */
 const evolve = () => {
-  // 1) attendre la première envie
+  // 1) Attendre que notre tamaStudi ait une "première envie"
   const functionToExecute = () => {
     mood();
     cycleOfAdultLife();
@@ -92,18 +96,18 @@ const evolve = () => {
   wantsTo(functionToExecute);
 };
 
-/* LES ENVIES 
+/* LES ENVIES : 
+Fonction pour gérer 
 - 😋 : faim, aléatoire minimum 30 sec et max 3 minutes
 - 🥱 : jouer, aléatoire minimum 30 sec et max 3 minutes
-- 💩 : caca, aléatoire minimum 30 sec et max 1.30 minutes après avoir mangé
-1) créer une fonction qu'on peut appeler plus tard dans notre code
-2) stocker les envies du Tama dans une variable
-3) avec un setTimeout, choisir une envie aléatoire 
-4) la durée du setTimeout est dynamique compris dans un intervalle défini
-5) afficher l'envie du Tama sur l'écran 
-6) envie de faire caca ne peut etre faite que si le tama a mangé 
+- 💩 : caca, aléatoire minimum 30 sec et max 3 minutes uniquement après avoir mangé
+1) Créer une fonction qu'on va pouvoir appeler plus tard dans notre code
+2) Stocker les envies de mon tama dans une variable
+3) Avec un setTimeout choisir une envie aléatoire
+4) La durée du setTimeout est dynamique est comprise entre une valeur max et une valeur min
+5) Afficher l'envie du tama sur notre écran 
+6) L'envie de faire caca ne peut être faite que s'il a déjà mangé
 */
-
 const wantsTo = (callback) => {
   const needs = ["😋", "🥱", "💩"];
   const minDuration = 1000;
@@ -125,54 +129,58 @@ const wantsTo = (callback) => {
   }, duration);
 };
 
-/* HUMEUR GENERALE :
-Une fonction qui calcule la moyenne des 3 indicateurs : faim, ennuie, propreté
-et elle affiche cette moyenne dans les vitals 
+/* HUMEUR  GÉNÉRALE :
+Une fonction qui calcule la moyenne des 3 indicateurs faim, ennui, prorpété de notre Tama.
+Et elle affiche cette moyenne dans les vitals
 */
 const mood = () => {
-  // partie 1 : Affichage numerique
+  // Partie 1 : affichage numérique
   const sum = myTama.fed + myTama.playfull + myTama.cleaned;
   const average = sum / 3;
   const rounded = Math.round(average);
   const displayMood = document.querySelector(".js-mood");
   displayMood.textContent = rounded;
-  // partie 2 : affichage visuel
+  // Partie 2 : affichage visuel
   const listOfEmojis = ["😢", "🙁", "🙂", "😄", "🤗", "🥰"];
   showInScreen(listOfEmojis[rounded]);
-  // mort ?
+  // Partie 3 : est-ce qu'il est mort ?
   if (rounded === 0) {
     myTama.alive = false;
   }
 };
 
-/* DUREE DE VIE 
-une fonction qui, toutes les minutes, met à jour la durée de vie du Tama. 
+/* DURÉE DE VIE :
+Une fonction qui toutes les minutes met à jour la durée de vie du Tama
 */
 const calcLifeDuration = () => {
+  const duration = 60_000; // 60 secondes
   const displayLifeDuration = document.querySelector(".js-life-duration");
-  const duration = 60000; // 60 secondes
   setInterval(() => {
     myTama.lifeDuration++;
     displayLifeDuration.textContent = myTama.lifeDuration;
   }, duration);
 };
 
-/* Gestion de vie adulte : 
-- Notre tama a une humeur générale
-- cette humeur est la moyenne de 3 indicateurs
-=> fonction mood() déja codé 
-- ces indicateurs évoluent avec le temps
-=> A FAIRE 
-- de Temps en temps, notre Tama a une envie
-=> wantsTo() deja codé 
-- si on ne reponds pas à cette envie dans les temps : l'indicateur associé diminue
-- si on réponds dans les temps : l'indicateur augmente
-- et ça continue jusqu'a la mort du Tama
-=> A FAIRE
+/* GESTION DE VIE "ADULTE"
+- Notre Tama a une humeur générale
+- Cette humeur est le moyenne de 3 indicateurs
+=> mood()
+- Ces indicateurs évoluent avec le temps
+=> À FAIRE
+- De temps en temps notre Tama a une "envie"
+=> wantsTo()
+- Si on ne réponds pas à cette envie dans les temps
+- L'indicateur associé diminue
+- Si on répond dans le temps
+- L'indicateur augmente
+=> À FAIRE
+- Et ça continue jusqu'à que notre Tama meurt
+=> À FAIRE
 */
-
 const cycleOfAdultLife = () => {
   if (myTama.alive) {
+    // 1) Les indicateurs évoluent avec le temps
+    // De temps en temps notre Tama a une "envie"
     const functionToExecute = (desire) => {
       showInScreen(desire, true);
       myTama.desire = desire;
@@ -216,6 +224,7 @@ const translateEmoji = (emoji) => {
 };
 
 const manageIndicators = (desire, hasSucceeded) => {
+  // ["😋", "🥱", "💩"]
   const numberToAdd = hasSucceeded ? 1 : -1;
   const calculName = hasSucceeded ? "addition" : "substraction";
   if (desire === "😋" && verifyIndicatorBeforeCalcul(myTama.fed, calculName)) {
@@ -239,16 +248,16 @@ const manageIndicators = (desire, hasSucceeded) => {
 };
 
 const verifyIndicatorBeforeCalcul = (value, calculName) => {
-  // verifier si l'indicateur peut etre incrémenter ou décrémenter
+  // Vérifier si l'indicateur peut être incrémenter ou décrémenter
   if (calculName === "addition") {
     return value < 5;
   } else {
     return value > 0;
-  } // vrai ou faux
+  }
 };
 
 const updateVitals = () => {
-  // affiche dans les vitals la valeur des 3 indicateurs
+  // Affiche dans les vitals la valeur des 3 indicateurs
   const displayIndicatorEat = document.querySelector(".js-score--eat");
   displayIndicatorEat.textContent = myTama.fed;
   const displayIndicatorPlay = document.querySelector(".js-score--play");
@@ -257,14 +266,15 @@ const updateVitals = () => {
   displayIndicatorClean.textContent = myTama.cleaned;
 };
 
-// Fonction qui retourne un nombre aléatoire entre un min et max
+/* Fonction du retourne un nombre aléatoire compris entre un min et max */
 const getRandomInt = (props) => {
   const max = props.max;
-  const min = props.min ? props.min : 0; // ternaire = condition "raccourcies" = conditions ? valeur si oui : valeur si non
+  // Ternaire = condition "raccourcie" = condition ? valeur si oui : valeur si non
+  const min = props.min ? props.min : 0;
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-// fonction qui gère l'affichage des emoticones
+/* Fonction qui gère l'affichage des emoticones dans l'écran du tama */
 const character = document.querySelector(".js-character");
 const desire = document.querySelector(".js-desire");
 const showInScreen = (display, isDesire) => {
@@ -275,5 +285,5 @@ const showInScreen = (display, isDesire) => {
   }
 };
 
-// lancer la fonction de début
+// Lance la fonction de "début de mon Tama"
 start();
