@@ -1,9 +1,5 @@
 # Cours javascript - octobre 2023
 
-## Présentation
-
-👋 Je m'appelle Charline je suis développeuse web.
-
 ## Cours
 
 Ce cours est composé d'une série de 6 lives d'une heure, à la fin de la session nous devrions avoir recoder un "petit" tamagotchi.
